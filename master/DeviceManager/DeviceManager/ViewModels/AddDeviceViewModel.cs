@@ -1,12 +1,13 @@
 ﻿using DeviceManager.Common;
 using DeviceManager.Contracts;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 
 namespace DeviceManager.ViewModels
 {
-    internal class AddDeviceViewModel : AbstractViewModel
+    internal class AddDeviceViewModel : AbstractViewModel, IDataErrorInfo
     {
         #region properties
         private string _title;
@@ -150,6 +151,7 @@ namespace DeviceManager.ViewModels
 
         }
 
+        #region commands
         [DebuggerStepThrough]
         private bool OnCanSubmit(object parameter)
         {
@@ -200,5 +202,39 @@ namespace DeviceManager.ViewModels
             // Code to clear all fields can be implemented
 
         }
+
+        #endregion commands
+
+
+        public string Error
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        string IDataErrorInfo.this[string fieldName]
+        {
+            get
+            {
+                string message = null;
+                if (fieldName == "Price")
+                {
+                    double doubleVal;
+                    if (double.TryParse(this.Price.ToString(), out doubleVal))
+                    {
+                        //Any range related validations
+                    }
+                    else
+                    {
+                        //Data type or format related validation
+                        message = "Format error";
+                    }
+                }
+                return message;             
+            }
+        }
+
+
+
+
     }
 }
