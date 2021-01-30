@@ -2,6 +2,7 @@
 using DeviceManager.Contracts;
 using System;
 using System.Diagnostics;
+using System.Windows;
 
 namespace DeviceManager.ViewModels
 {
@@ -9,6 +10,25 @@ namespace DeviceManager.ViewModels
     {
 
         #region properties
+
+
+
+        private string _title;
+
+        public string Title
+        {
+            get
+            {
+                return _title;
+            }
+            set
+            {
+                _title = value;
+                NotifyPropertyChanged("Title");
+
+            }
+        }
+
         private int _id;
         public int ID
         {
@@ -161,28 +181,36 @@ namespace DeviceManager.ViewModels
 
         private void OnSubmit(object parameter)
         {
-           
-            _deviceObj.id = ID; // ideally this has to be read only if it is an Identity column
-            _deviceObj.location = Location;
-            _deviceObj.type = Type;
-            _deviceObj.device_health = Device_Health;
-            _deviceObj.last_used = Last_Used.Date;
-            _deviceObj.price = Convert.ToDecimal(Price);
-            _deviceObj.color = Color;
-
-            using (var db = new DeviceInfoManagerEntities())
+            try
             {
-                var entity = db.tblDeviceDetails.Find(_deviceObj.id);
-                if (entity == null)
+                _deviceObj.id = ID; // ideally this has to be read only if it is an Identity column
+                _deviceObj.location = Location;
+                _deviceObj.type = Type;
+                _deviceObj.device_health = Device_Health;
+                _deviceObj.last_used = Last_Used.Date;
+                _deviceObj.price = Convert.ToDecimal(Price);
+                _deviceObj.color = Color;
+
+                using (var db = new DeviceInfoManagerEntities())
                 {
-                    return;
+                    var entity = db.tblDeviceDetails.Find(_deviceObj.id);
+                    if (entity == null)
+                    {
+                        return;
+                    }
+
+                    db.Entry(entity).CurrentValues.SetValues(_deviceObj);
+                    db.SaveChanges();
                 }
 
-                db.Entry(entity).CurrentValues.SetValues(_deviceObj);
-                db.SaveChanges();
+                _mainVMCallback.LoadDeviceDetails();
             }
 
-            _mainVMCallback.LoadDeviceDetails();
+            catch(Exception ex)
+            {
+
+                MessageBox.Show("Unexpected error occured. \n" + ex.InnerException);
+            }
         }
 
         [DebuggerStepThrough]

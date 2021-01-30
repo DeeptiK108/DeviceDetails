@@ -2,12 +2,29 @@
 using DeviceManager.Contracts;
 using System;
 using System.Diagnostics;
+using System.Windows;
 
 namespace DeviceManager.ViewModels
 {
-    internal class AddDeviceViewModel: AbstractViewModel
+    internal class AddDeviceViewModel : AbstractViewModel
     {
         #region properties
+        private string _title;
+
+        public string Title
+        {
+            get
+            {
+                return _title;
+            }
+            set
+            {
+                _title = value;
+                NotifyPropertyChanged("Title");
+
+            }
+        }
+
         private int _id;
         public int ID
         {
@@ -18,7 +35,7 @@ namespace DeviceManager.ViewModels
             set
             {
                 _id = value;
-                  NotifyPropertyChanged("ID");
+                NotifyPropertyChanged("ID");
 
             }
         }
@@ -33,7 +50,7 @@ namespace DeviceManager.ViewModels
             set
             {
                 _location = value;
-                  NotifyPropertyChanged("Location");
+                NotifyPropertyChanged("Location");
 
             }
         }
@@ -49,7 +66,7 @@ namespace DeviceManager.ViewModels
             set
             {
                 _type = value;
-                   NotifyPropertyChanged("Type");
+                NotifyPropertyChanged("Type");
 
             }
         }
@@ -65,7 +82,7 @@ namespace DeviceManager.ViewModels
             set
             {
                 _device_health = value;
-                   NotifyPropertyChanged("Device_Health");
+                NotifyPropertyChanged("Device_Health");
 
             }
         }
@@ -81,7 +98,7 @@ namespace DeviceManager.ViewModels
             set
             {
                 _last_used = value;
-                    NotifyPropertyChanged("Last_Used");
+                NotifyPropertyChanged("Last_Used");
 
             }
         }
@@ -97,7 +114,7 @@ namespace DeviceManager.ViewModels
             set
             {
                 _price = value;
-                    NotifyPropertyChanged("Price");
+                NotifyPropertyChanged("Price");
 
             }
         }
@@ -113,7 +130,7 @@ namespace DeviceManager.ViewModels
             set
             {
                 _color = value;
-                    NotifyPropertyChanged("Color");
+                NotifyPropertyChanged("Color");
 
             }
         }
@@ -124,9 +141,10 @@ namespace DeviceManager.ViewModels
         public DelegateCommand RevertCommand { get; private set; }
 
         IMainViewModelCallback _mainVMCallback;
-        public AddDeviceViewModel(IMainViewModelCallback mainVM )
+        public AddDeviceViewModel(IMainViewModelCallback mainVM)
         {
             _mainVMCallback = mainVM;
+            
             SubmitCommand = new DelegateCommand(OnSubmit, OnCanSubmit);
             RevertCommand = new DelegateCommand(OnRevert, OnCanRevert);
 
@@ -141,22 +159,32 @@ namespace DeviceManager.ViewModels
 
         private void OnSubmit(object parameter)
         {
-            var deviceObj = new tblDeviceDetails();
-            deviceObj.id = ID;
-            deviceObj.location = Location;
-            deviceObj.type = Type;
-            deviceObj.device_health = Device_Health;
-            deviceObj.last_used = Last_Used.Date;
-            deviceObj.price = Convert.ToDecimal(Price);
-            deviceObj.color = Color;
-
-            using (var db = new DeviceInfoManagerEntities())
+            try
             {
-                db.tblDeviceDetails.Add(deviceObj);
-                db.SaveChanges();
+                var deviceObj = new tblDeviceDetails();
+                deviceObj.id = ID;
+                deviceObj.location = Location;
+                deviceObj.type = Type;
+                deviceObj.device_health = Device_Health;
+                deviceObj.last_used = Last_Used.Date;
+                deviceObj.price = Convert.ToDecimal(Price);
+                deviceObj.color = Color;
+
+                using (var db = new DeviceInfoManagerEntities())
+                {
+                    db.tblDeviceDetails.Add(deviceObj);
+                    db.SaveChanges();
+                }
+
+                _mainVMCallback.LoadDeviceDetails();
+
             }
 
-            _mainVMCallback.LoadDeviceDetails();
+            catch (Exception ex)
+            {
+
+                MessageBox.Show("Unexpected error occured. \n" + ex.InnerException);
+            }
 
         }
 

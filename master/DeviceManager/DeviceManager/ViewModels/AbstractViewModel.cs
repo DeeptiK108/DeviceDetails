@@ -22,7 +22,7 @@ namespace DeviceManager.ViewModels
 
         public void NotifyPropertyChanged(string propertyName)
         {
-            //You can also use SendPropertyChanged( () => PropertyName )
+            
             SendPropertyChanged(propertyName);
         } 
 

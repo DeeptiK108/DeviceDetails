@@ -1,6 +1,7 @@
 ﻿using DeviceManager.Common;
 using DeviceManager.Contracts;
 using DeviceManager.Views;
+using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -27,13 +28,23 @@ namespace DeviceManager.ViewModels
 
         public void LoadDeviceDetails()
         {
-            //Fetch device details from DB
-            using (var ctx = new DeviceInfoManagerEntities())
+            try
             {
-                var q = (from a in ctx.tblDeviceDetails
-                         select a).ToList();
-                this.Devices = new ObservableCollection<tblDeviceDetails>(q);
-            }      
+                //Fetch device details from DB
+                using (var ctx = new DeviceInfoManagerEntities())
+                {
+                    var q = (from a in ctx.tblDeviceDetails
+                             select a).ToList();
+                    this.Devices = new ObservableCollection<tblDeviceDetails>(q);
+                }
+            }
+
+            catch (Exception ex)
+            {
+
+                MessageBox.Show("Unexpected error occured while fetching details. \n" + ex.InnerException);
+            }
+
 
         }
 
@@ -78,20 +89,27 @@ namespace DeviceManager.ViewModels
         }
         private void OnAddDeviceDetails(object parameter)
         {
-            var vm = new AddDeviceViewModel(this)
+            try
             {
-                //Set properties if any
-               // Name = "[new Device Details]"
-            };
-            var dlg = new AddDeviceDialog()
-            {
-                DataContext = vm
-            };
-           
-            if (dlg.ShowDialog() != true) return;
+                var vm = new AddDeviceViewModel(this)
+                {
+                    //Set properties if any
+                     Title = "[Add Device Details]"
+                };
+                var dlg = new AddDeviceDialog()
+                {
+                    DataContext = vm
+                };
 
-            //Reload Items
-            LoadDeviceDetails();
+                if (dlg.ShowDialog() != true) return;
+            }
+
+            catch (Exception ex)
+            {
+
+                MessageBox.Show("Error occured while adding device details. \n" + ex.InnerException);
+            }
+
 
         }
 
@@ -102,18 +120,28 @@ namespace DeviceManager.ViewModels
         }
         private void OnEditDeviceDetails(object parameter)
         {
-            var vm = new EditDeviceViewModel(SelectedDevice, this)
+            try
             {
-                //Set properties if any
-                // Name = "[new Device Details]"
-            };
-            var dlg = new AddDeviceDialog()
-            {
-                DataContext = vm
-            };
+                var vm = new EditDeviceViewModel(SelectedDevice, this)
+                {
+                    //Set properties if any
+                    Title = "[Edit Device Details]"
+                };
+                var dlg = new AddDeviceDialog()
+                {
+                    DataContext = vm
+                };
 
-            if (dlg.ShowDialog() != true) return;
-     
+                if (dlg.ShowDialog() != true) return;
+            }
+
+            catch (Exception ex)
+            {
+
+                MessageBox.Show("Unexpected error occured during Edit device details. \n" + ex.InnerException);
+            }
+
+
         }
 
         [DebuggerStepThrough]
