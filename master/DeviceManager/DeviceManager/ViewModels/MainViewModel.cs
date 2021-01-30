@@ -19,6 +19,8 @@ namespace DeviceManager.ViewModels
 
         public  MainViewModel()
         {
+            //Need to implement appcontext..
+
             AddDeviceDetailsCommand = new DelegateCommand(OnAddDeviceDetails, OnCanAddDeviceDetails);
             EditDeviceDetailsCommand = new DelegateCommand(OnEditDeviceDetails, OnCanEditDeviceDetails);
             DeleteDeviceDetailsCommand = new DelegateCommand(OnDeleteDeviceDetails, OnCanDeleteDeviceDetails);
@@ -122,17 +124,24 @@ namespace DeviceManager.ViewModels
         {
             try
             {
-                var vm = new EditDeviceViewModel(SelectedDevice, this)
+                if (SelectedDevice != null)
                 {
-                    //Set properties if any
-                    Title = "[Edit Device Details]"
-                };
-                var dlg = new AddDeviceDialog()
-                {
-                    DataContext = vm
-                };
+                    var vm = new EditDeviceViewModel(SelectedDevice, this)
+                    {
+                        //Set properties if any
+                        Title = "[Edit Device Details]"
+                    };
+                    var dlg = new AddDeviceDialog()
+                    {
+                        DataContext = vm
+                    };
 
-                if (dlg.ShowDialog() != true) return;
+                    if (dlg.ShowDialog() != true) return;
+                }
+                else
+                {
+                    MessageBox.Show("Please select an entry for Edit!","Edit Device details");
+                }
             }
 
             catch (Exception ex)
