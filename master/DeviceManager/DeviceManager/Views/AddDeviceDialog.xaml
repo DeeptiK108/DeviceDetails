@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DeviceManager.Views"
+        xmlns:local="clr-namespace:DeviceManager.Views"     
+        xmlns:validationrules="clr-namespace:DeviceManager.Common;assembly=DeviceManager.Common"
         mc:Ignorable="d"
         Title="{Binding Title , FallbackValue='Add Device details'}" Height="450" Width="500">
    
@@ -27,7 +28,7 @@
 
         <TextBlock Text="ID" Grid.Column="0" Grid.Row="0" Margin="15,15,15,5" FontSize="16"/>
         <TextBox Text="{Binding ID, UpdateSourceTrigger=PropertyChanged, FallbackValue='BINDING ERROR'}" Grid.Column="1" Grid.Row="0" Margin="15,15,15,5" FontSize="16" IsReadOnly="{Binding IsReadonly}"/>
-
+      
         <TextBlock Text="Location" Grid.Column="0" Grid.Row="1" Margin="15,15,15,5" FontSize="16"/>
         <TextBox Text="{Binding Location, FallbackValue='BINDING ERROR'}" Grid.Column="1" Grid.Row="1" Margin="15,15,15,5"  FontSize="16" />
 
@@ -42,7 +43,8 @@
         <TextBox Text="{Binding Last_Used, UpdateSourceTrigger=PropertyChanged, FallbackValue='BINDING ERROR'}" Grid.Column="1" Grid.Row="4" Margin="15,15,15,5" FontSize="16" IsReadOnly="{Binding IsReadonly}"/>
 
         <TextBlock Text="Price" Grid.Column="0" Grid.Row="5" Margin="15,15,15,5" FontSize="16"/>
-        <TextBox Text="{Binding Price, FallbackValue='BINDING ERROR'}" Grid.Column="1" Grid.Row="5" Margin="15,15,15,5"  FontSize="16" />
+        <TextBox Text="{Binding Price, FallbackValue='BINDING ERROR',ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="5" Margin="15,15,15,5"  FontSize="16" />
+       
 
         <TextBlock Text="Color" Grid.Column="0" Grid.Row="6" Margin="15,15,15,5" FontSize="16"/>
         <TextBox Text="{Binding Color, FallbackValue='BINDING ERROR'}" Grid.Column="1" Grid.Row="6" Margin="15,15,15,5"  FontSize="16" />
