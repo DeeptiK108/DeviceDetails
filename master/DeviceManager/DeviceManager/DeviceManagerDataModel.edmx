@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DeviceInfoManagerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblDeviceDetails">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="location" Type="varchar" MaxLength="200" />
+          <Property Name="type" Type="varchar" MaxLength="50" />
+          <Property Name="device_health" Type="varchar" MaxLength="100" />
+          <Property Name="last_used" Type="date" />
+          <Property Name="price" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="color" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityContainer Name="DeviceInfoManagerModelStoreContainer">
+          <EntitySet Name="tblDeviceDetails" EntityType="Self.tblDeviceDetails" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DeviceInfoManagerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblDeviceDetails">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="location" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="device_health" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="last_used" Type="DateTime" Precision="0" />
+          <Property Name="price" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="color" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityContainer Name="DeviceInfoManagerEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblDeviceDetails" EntityType="Self.tblDeviceDetails" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DeviceInfoManagerModelStoreContainer" CdmEntityContainer="DeviceInfoManagerEntities">
+          <EntitySetMapping Name="tblDeviceDetails">
+            <EntityTypeMapping TypeName="DeviceInfoManagerModel.tblDeviceDetails">
+              <MappingFragment StoreEntitySet="tblDeviceDetails">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="location" ColumnName="location" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="device_health" ColumnName="device_health" />
+                <ScalarProperty Name="last_used" ColumnName="last_used" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="color" ColumnName="color" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
