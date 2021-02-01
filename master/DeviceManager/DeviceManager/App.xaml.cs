@@ -14,7 +14,7 @@ namespace DeviceManager
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
-    {
+    {       
 
         private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
@@ -29,10 +29,10 @@ namespace DeviceManager
 
         void InvokeErrorWindow(Exception ex)
         {
-            //Trace.WriteLine(">> Unhandled Exception: " + (ex is PublicException ? ex.Message : ex.ToString()));
-            //Trace.Flush();
-
-            //ExceptionHandler.HandleException("Unhandled Exception!", ex);
+            MessageBox.Show(
+                   ex.Message,
+                   "Error", MessageBoxButton.OK,
+                   MessageBoxImage.Information);
         }
 
 

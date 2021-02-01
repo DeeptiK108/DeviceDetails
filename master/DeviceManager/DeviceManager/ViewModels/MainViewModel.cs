@@ -24,6 +24,7 @@ namespace DeviceManager.ViewModels
             AddDeviceDetailsCommand = new DelegateCommand(OnAddDeviceDetails, OnCanAddDeviceDetails);
             EditDeviceDetailsCommand = new DelegateCommand(OnEditDeviceDetails, OnCanEditDeviceDetails);
             DeleteDeviceDetailsCommand = new DelegateCommand(OnDeleteDeviceDetails, OnCanDeleteDeviceDetails);
+            Devices = new ObservableCollection<tblDeviceDetails>();
 
             LoadDeviceDetails();
         }
@@ -31,25 +32,14 @@ namespace DeviceManager.ViewModels
 
         #region methods
         public void LoadDeviceDetails()
-        {
-            try
-            {
+        {           
                 //Fetch device details from DB
                 using (var ctx = new DeviceInfoManagerEntities())
                 {
                     var q = (from a in ctx.tblDeviceDetails
                              select a).ToList();
                     this.Devices = new ObservableCollection<tblDeviceDetails>(q);
-                }
-            }
-
-            catch (Exception ex)
-            {
-
-                MessageBox.Show("Unexpected error occured while fetching details. \n" + ex.InnerException);
-            }
-
-
+                }    
         }
         #endregion methods
 
