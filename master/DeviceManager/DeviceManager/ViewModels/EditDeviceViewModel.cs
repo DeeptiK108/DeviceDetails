@@ -8,6 +8,9 @@ using System.Windows;
 
 namespace DeviceManager.ViewModels
 {
+    /// <summary>
+    /// Class to edit new Device details
+    /// </summary>
     internal class EditDeviceViewModel:AbstractViewModel, IDataErrorInfo
     {
 
@@ -206,6 +209,7 @@ namespace DeviceManager.ViewModels
                     db.SaveChanges();
                 }
 
+                MessageBox.Show("Device details saved.");
                 _mainVMCallback.LoadDeviceDetails();
             }
 

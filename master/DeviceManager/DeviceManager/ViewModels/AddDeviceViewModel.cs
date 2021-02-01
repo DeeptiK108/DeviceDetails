@@ -8,6 +8,9 @@ using System.Windows;
 
 namespace DeviceManager.ViewModels
 {
+    /// <summary>
+    /// Class to add new Device details
+    /// </summary>
     internal class AddDeviceViewModel : AbstractViewModel, IDataErrorInfo
     {
         #region properties
@@ -205,8 +208,8 @@ namespace DeviceManager.ViewModels
                         db.tblDeviceDetails.Add(deviceObj);
                         db.SaveChanges();
                     }
-               
 
+                MessageBox.Show("Device details successfully added!");
                 _mainVMCallback.LoadDeviceDetails();
 
             }
