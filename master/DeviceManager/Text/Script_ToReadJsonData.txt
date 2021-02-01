@@ -1,0 +1,20 @@
+
+--Adapt thze path for the file
+--Note: This craetes a table by name tblDeviceDetails
+
+Declare @JSON varchar(max)
+SELECT @JSON=BulkColumn
+FROM OPENROWSET (BULK 'E:\Deepti_Edrive\DEEPTI_KALAMADI\PROJECTS\data.JSON', SINGLE_CLOB) import
+SELECT *
+into tblDeviceDetails
+FROM OPENJSON (@JSON)
+WITH 
+(
+    [id] int, 
+    [location] varchar(200), 
+    [type] varchar(50), 
+    [device_health] varchar(100),   
+    [last_used] date, 
+    [price] numeric(18,2), 
+    [color] nvarchar(20) 
+)

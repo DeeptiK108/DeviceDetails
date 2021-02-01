@@ -16,8 +16,8 @@ namespace DeviceManager.ViewModels
         public DelegateCommand EditDeviceDetailsCommand { get; private set; }
         public DelegateCommand DeleteDeviceDetailsCommand { get; private set; }
 
-
-        public  MainViewModel()
+        #region Constructor
+        public MainViewModel()
         {
             //Need to implement appcontext..
 
@@ -27,7 +27,9 @@ namespace DeviceManager.ViewModels
 
             LoadDeviceDetails();
         }
+        #endregion constructor
 
+        #region methods
         public void LoadDeviceDetails()
         {
             try
@@ -49,6 +51,7 @@ namespace DeviceManager.ViewModels
 
 
         }
+        #endregion methods
 
         #region properties
         private ObservableCollection<tblDeviceDetails> _devices;
@@ -108,8 +111,8 @@ namespace DeviceManager.ViewModels
 
             catch (Exception ex)
             {
-
-                MessageBox.Show("Error occured while adding device details. \n" + ex.InnerException);
+                //Custome message can be shown to the user and INeer exception can be logged in a file
+                MessageBox.Show("Error occured while adding device details. \n" + ex.Message); 
             }
 
 
@@ -147,7 +150,7 @@ namespace DeviceManager.ViewModels
             catch (Exception ex)
             {
 
-                MessageBox.Show("Unexpected error occured during Edit device details. \n" + ex.InnerException);
+                MessageBox.Show("Unexpected error occured during Edit device details. \n" + ex.Message);
             }
 
 
@@ -159,9 +162,10 @@ namespace DeviceManager.ViewModels
             return true;
         }
         private void OnDeleteDeviceDetails(object parameter)
-        {          
-
-            if (MessageBox.Show("Are you sure you really want to delete this entry?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+        {
+            try
+            {
+                if (MessageBox.Show("Are you sure you really want to delete this entry?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
               
                 using (var db = new DeviceInfoManagerEntities())
@@ -175,7 +179,16 @@ namespace DeviceManager.ViewModels
                     db.tblDeviceDetails.Attach(entity);
                     db.Entry(entity).State = System.Data.Entity.EntityState.Deleted;
                     db.SaveChanges();
-                }          
+                }
+
+                    LoadDeviceDetails();
+                }
+            }
+
+            catch (Exception ex)
+            {
+
+                MessageBox.Show("Unexpected error occured during Delete device details. \n" + ex.Message);
             }
         }
 

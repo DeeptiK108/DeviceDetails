@@ -5,16 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DeviceManager.ViewModels"
         mc:Ignorable="d"    
-        Title="Device Details Manager"  WindowStartupLocation="CenterScreen" WindowState="Maximized">
+        Title="Device Details Manager"  WindowStartupLocation="CenterScreen" WindowState="Maximized" Background="LightBlue">
 
     <Window.DataContext>
         <local:MainViewModel />
     </Window.DataContext>
-
-
+    
+   
 
     <ScrollViewer  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"   VerticalAlignment="Top">
         <Grid  >
+          
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -23,12 +24,21 @@
             </Grid.RowDefinitions>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"  VerticalAlignment="Top">
-                <TextBlock Text="Device Details" Grid.Column="0" Grid.Row="0" Margin="15,15,15,5" FontSize="16"/>
+                <TextBlock Text="Device Details" Grid.Column="0" Grid.Row="0" Margin="15,15,15,5" FontSize="25" />
 
             </StackPanel>
-
-            <StackPanel Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Auto"  ScrollViewer.VerticalScrollBarVisibility="Auto" Height="500"  Width="Auto" Orientation="Horizontal" HorizontalAlignment="Center"  VerticalAlignment="Top">
-                <DataGrid ItemsSource="{Binding Path=Devices}" SelectedItem="{Binding Path=SelectedDevice, Mode=TwoWay}"/>
+            <!--Calender control and also a display of the color code can be added for professional look and feel of the UI-->
+            <StackPanel Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Auto"  ScrollViewer.VerticalScrollBarVisibility="Auto" Height="500"   Orientation="Horizontal" HorizontalAlignment="Center"  VerticalAlignment="Top">
+                <DataGrid ItemsSource="{Binding Path=Devices}" SelectedItem="{Binding Path=SelectedDevice, Mode=TwoWay}" AutoGenerateColumns="False" >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding Path= id}" Width="50" />
+                        <DataGridTextColumn Header="Location" Binding="{Binding Path= location}" Width="250" />
+                        <DataGridTextColumn Header="Type" Binding="{Binding Path= type}" Width="100" />
+                        <DataGridTextColumn Header="Device Health" Binding="{Binding Path= device_health}" Width="100" />
+                        <DataGridTextColumn Header="Last Used" Binding="{Binding Path= last_used}" Width="200" />
+                        <DataGridTextColumn Header="Color" Binding="{Binding Path= color}" Width="100" />
+                    </DataGrid.Columns>
+            </DataGrid>
             </StackPanel>
 
             <StackPanel Grid.Row ="3" Orientation="Horizontal" VerticalAlignment="bottom" HorizontalAlignment="Center">
