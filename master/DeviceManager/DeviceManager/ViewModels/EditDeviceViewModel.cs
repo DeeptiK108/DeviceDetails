@@ -1,17 +1,19 @@
 ﻿using DeviceManager.Common;
 using DeviceManager.Contracts;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 
 namespace DeviceManager.ViewModels
 {
-    internal class EditDeviceViewModel:AbstractViewModel
+    internal class EditDeviceViewModel:AbstractViewModel, IDataErrorInfo
     {
 
         #region properties
 
-
+        private List<string> ErrorList;
 
         private string _title;
 
@@ -166,7 +168,7 @@ namespace DeviceManager.ViewModels
             }
             else
             {
-                //Implement defaults or fetch current selected item
+                //Implement defaults or fetch current selected item               
                 
             }
 
@@ -176,7 +178,8 @@ namespace DeviceManager.ViewModels
         private bool OnCanSubmit(object parameter)
         {
             // All necessary conditions can be included here
-            return true;
+            //Check if all enetred data is valid
+            return ((ErrorList.Count > 0) ? false : true);
         }
 
         private void OnSubmit(object parameter)
@@ -226,8 +229,59 @@ namespace DeviceManager.ViewModels
 
         }
 
+        #region validation
+        public string Error
+        {
+            get { throw new NotImplementedException(); }
+        }
 
+        string IDataErrorInfo.this[string fieldName]
+        {
 
+            get
+            {
+                ErrorList = new List<string>();
+                string message = "";
+                if (fieldName == "Price")
+                {
+                    double doubleVal;
+                    if (double.TryParse(this.Price.ToString(), out doubleVal))
+                    {
+                        //Any range related validations
+                    }
+                    else
+                    {
+                        //Data type or format related validation
+                        message = "Price has a Format error.\n";
+                        ErrorList.Add(message);
+                    }
+                }
+
+                else if (fieldName == "ID")
+                {
+                    int val;
+                    if (int.TryParse(this.ID.ToString(), out val))
+                    {
+                        if (ID == 0)
+
+                        {
+                            message = "ID cannot be 0.\n";
+                            ErrorList.Add(message);
+                        }
+                    }
+                    else
+                    {
+                        //Data type or format related validation
+                        message = "ID has a Format error";
+                        ErrorList.Add(message);
+                    }
+                }
+              
+                return message;
+            }
+        }
+
+        #endregion 
     }
 
 }

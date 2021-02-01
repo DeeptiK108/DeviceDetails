@@ -1,6 +1,7 @@
 ﻿using DeviceManager.Common;
 using DeviceManager.Contracts;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
@@ -10,6 +11,8 @@ namespace DeviceManager.ViewModels
     internal class AddDeviceViewModel : AbstractViewModel, IDataErrorInfo
     {
         #region properties
+        private List<string> ErrorList;
+
         private string _title;
 
         public string Title
@@ -136,12 +139,31 @@ namespace DeviceManager.ViewModels
             }
         }
 
+
+        //private string _message;
+        //public string Message
+        //{
+        //    get
+        //    {
+        //        return _message;
+        //    }
+        //    set
+        //    {
+        //        _message = value;
+        //        NotifyPropertyChanged("Message");
+
+        //    }
+        //}
+
         #endregion properties
 
         public DelegateCommand SubmitCommand { get; private set; }
         public DelegateCommand RevertCommand { get; private set; }
 
         IMainViewModelCallback _mainVMCallback;
+
+        #region constructor
+
         public AddDeviceViewModel(IMainViewModelCallback mainVM)
         {
             _mainVMCallback = mainVM;
@@ -151,12 +173,17 @@ namespace DeviceManager.ViewModels
 
         }
 
+        #endregion
+
         #region commands
         [DebuggerStepThrough]
         private bool OnCanSubmit(object parameter)
         {
-            // All necessary conditions can be included here
-            return true;
+            // All necessary conditions can be included here       
+            //validation can be proofed   
+            return ((ErrorList.Count > 0) ? false : true);
+            
+
         }
 
         private void OnSubmit(object parameter)
@@ -172,11 +199,13 @@ namespace DeviceManager.ViewModels
                 deviceObj.price = Convert.ToDecimal(Price);
                 deviceObj.color = Color;
 
-                using (var db = new DeviceInfoManagerEntities())
-                {
-                    db.tblDeviceDetails.Add(deviceObj);
-                    db.SaveChanges();
-                }
+               
+                    using (var db = new DeviceInfoManagerEntities())
+                    {
+                        db.tblDeviceDetails.Add(deviceObj);
+                        db.SaveChanges();
+                    }
+               
 
                 _mainVMCallback.LoadDeviceDetails();
 
@@ -206,16 +235,19 @@ namespace DeviceManager.ViewModels
         #endregion commands
 
 
+        #region validation
         public string Error
         {
             get { throw new NotImplementedException(); }
         }
 
         string IDataErrorInfo.this[string fieldName]
-        {
+        {        
+        
             get
             {
-                string message = null;
+                ErrorList = new List<string>();
+              string  message = "";
                 if (fieldName == "Price")
                 {
                     double doubleVal;
@@ -226,14 +258,37 @@ namespace DeviceManager.ViewModels
                     else
                     {
                         //Data type or format related validation
-                        message = "Format error";
+                        message = "Price has a Format error.\n";
+                        ErrorList.Add(message);
                     }
                 }
+
+               else if (fieldName == "ID")
+                {
+                    int val;
+                    if (int.TryParse(this.ID.ToString(), out val))
+                    {
+                       if(ID == 0)
+
+                        {
+                            message = "ID cannot be 0.\n";
+                            ErrorList.Add(message);
+                        }
+                    }
+                    else
+                    {
+                        //Data type or format related validation
+                       message = "ID has a Format error";
+                        ErrorList.Add(message);
+                    }
+                }
+
+              
                 return message;             
             }
         }
 
-
+        #endregion
 
 
     }
